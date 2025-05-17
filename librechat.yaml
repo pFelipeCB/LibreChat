@@ -19,9 +19,11 @@ endpoints:
       dropParams: ['stop']
       modelDisplayLabel: 'OpenRouter'
   
+  # Deshabilitar otros endpoints para evitar confusión
   openAI:
     disabled: true
   anthropic:
     disabled: true
   google:
     disabled: true
+  # Si aparecen otros por defecto en la UI de LibreChat que no quieres, puedes deshabilitarlos aquí también.
