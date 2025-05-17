@@ -1,1 +1,105 @@
+# Configuration version
+version: 1.2.1
 
+# Cache settings
+cache: true
+
+# Custom interface configuration (puedes personalizar estos mensajes si quieres)
+interface:
+  customWelcome: "Bienvenido a Shiftlix Chat AI potenciado por LibreChat!"
+  privacyPolicy:
+    externalUrl: 'https://librechat.ai/privacy-policy' # O tu propia URL
+    openNewTab: true
+  termsOfService:
+    externalUrl: 'https://librechat.ai/tos' # O tu propia URL
+    openNewTab: true
+    # modalAcceptance: true # Descomenta si quieres un modal de aceptación
+  endpointsMenu: true
+  modelSelect: true
+  parameters: true
+  sidePanel: true
+  presets: true
+  prompts: true
+  bookmarks: true
+  multiConvo: true
+  agents: true # Habilita la interfaz de agentes
+
+# Definition of custom endpoints
+endpoints:
+  custom:
+    # OpenRouter Configuration
+    - name: 'OpenRouter'
+      apiKey: '${OPENROUTER_API_KEY}' # Variable de entorno en Coolify
+      baseURL: 'https://openrouter.ai/api/v1'
+      models:
+        default: ['meta-llama/llama-3.1-8b-instruct']
+        fetch: true 
+      titleConvo: true
+      titleModel: 'meta-llama/llama-3.1-8b-instruct'
+      dropParams: ['stop']
+      modelDisplayLabel: 'OpenRouter'
+  
+  # Deshabilitar endpoints genéricos para evitar duplicados si solo usas OpenRouter
+  # o si los configuras explícitamente en 'custom'
+  openAI:
+    disabled: true
+  anthropic:
+    disabled: true
+  google:
+    disabled: true
+  # Puedes añadir más aquí si LibreChat los crea por defecto y no los quieres:
+  # azureOpenAI:
+  #   disabled: true
+  # gptPlugins:
+  #   disabled: true
+
+# (Punto 8) Example Actions Object Structure
+actions:
+  allowedDomains: # Dominios a los que los agentes/plugins pueden acceder
+    - "swapi.dev"       # Ejemplo de la documentación
+    - "librechat.ai"    # Ejemplo de la documentación
+    - "google.com"      # Para búsquedas, etc.
+    - "wikipedia.org"   # Útil para información general
+    # Añade otros dominios que tus agentes puedan necesitar
+
+# (Punto 9) Example MCP Servers Object Structure (COMENTADO POR DEFECTO)
+# Descomenta y configura si tienes estos servidores corriendo y accesibles.
+# mcpServers:
+#   filesystem: # Ejemplo para acceder al sistema de archivos local del servidor LibreChat
+#     command: npx
+#     args:
+#       - -y
+#       - "@modelcontextprotocol/server-filesystem"
+#       - /app/uploads # Ruta DENTRO del contenedor de LibreChat donde podría haber archivos
+#     iconPath: /app/client/public/assets/logo.svg # Ajusta si es necesario
+
+# (Punto 11) File Upload Configuration
+fileConfig:
+  endpoints:
+    # Configuración por defecto para todos los endpoints si no se especifica lo contrario
+    default:
+      fileLimit: 5       # Máximo 5 archivos por subida
+      fileSizeLimit: 25  # Máximo 25 MB por archivo individual
+      totalSizeLimit: 100 # Máximo 100 MB en total por subida
+      supportedMimeTypes: # Tipos de archivo permitidos
+        - "image/jpeg"
+        - "image/png"
+        - "image/webp"
+        - "image/gif"
+        - "application/pdf"
+        - "text/plain"
+        - "text/markdown"
+        - "text/csv"
+        - "application/msword" # .doc
+        - "application/vnd.openxmlformats-officedocument.wordprocessingml.document" # .docx
+        - "application/vnd.oasis.opendocument.text" # .odt
+    openRouter: # Configuración específica para tu endpoint OpenRouter (hereda de default si no se especifica)
+      fileLimit: 5
+      fileSizeLimit: 25 
+      totalSizeLimit: 100
+    # assistants: # Configuración específica si usas la API de Assistants directamente
+    #   fileLimit: 10
+    #   fileSizeLimit: 500 # OpenAI Assistants API soporta archivos más grandes
+    #   totalSizeLimit: 1000 
+  serverFileSizeLimit: 500  # Límite global de tamaño de archivo en el servidor en MB
+  avatarSizeLimit: 2      # Límite para el tamaño del avatar del usuario en MB
